@@ -12,7 +12,7 @@
 	;width 280,150
 	cls 1
 	title "新月 ランチャー"
-	onexit *gotray
+	onexit *q_stop
 
 	GetDoubleExe ;二重起動防止
 	if stat {
@@ -20,6 +20,7 @@
 		end
 	}
 
+	chdir "launch"
 	exec "WScript start-shingetsu.vbs",1
 	;exec "mount-shingetsu.bat",1
 	;exec "start-shingetsu.bat",1
@@ -44,17 +45,23 @@
 	; 選択されたメニューアイテムID
 	itemid = wprm & $FFFF
 
-	if itemid == CMD_OPENBBS {
+	if itemid == CMD_OPENBBS1 {
 		exec "http://localhost:8000",16
 	}
+	;if itemid == CMD_OPENBBS2 {
+	;	exec "http://localhost:8000",16
+	;}
 	if itemid == CMD_MINI {
 		gsel 0, -1
 	}
 	if itemid == CMD_QUIT {
-		exec "Wscript stop-shingetsu.vbs",1
+		;mes ""
+		;mes "　終了作業中です。"
+		;exec "Wscript stop-shingetsu.vbs",1
 		;exec "stop-shingetsu.bat",1
-		goto *lb_quit
+		;gosub *lb_quit
 		;end
+		goto *q_stop
 	}
 	;if itemid == CMD_MESSAGE {
 	;	dialog "メニュー作成のテストです", 0, "メッセージ表示"
@@ -88,12 +95,25 @@
 
 	; アイコンの破棄
 	dllproc "DestroyIcon", hicon, 1, D_USER
-
-	end
+	return
+	;end
 
 *gotray
 	gsel 0, -1
+	wait 10
 	goto *mainloop
+
+*q_stop
+	dialog "新月を終了しますか？", 2, "新月 ランチャー"
+	if stat == 6 {
+		exec "Wscript stop-shingetsu.vbs",1
+		gosub *lb_quit
+		;goto *lb_quit
+		end
+	} else {
+		goto *mainloop
+	}
+	
 
 ;*stopshingetsu
 ;	screen 2,140,75

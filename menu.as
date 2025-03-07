@@ -1,7 +1,8 @@
 	#define WM_COMMAND	0x0111
 
 	; メニューアイテムIDを定義
-	#define CMD_OPENBBS	   1	  ;「BBS を開く」アイテムのID
+	#define CMD_OPENBBS1	   1	  ;「BBS を開く」アイテムのID
+	;#define CMD_OPENBBS2	   5
 	#define CMD_MINI	   2	  ;「最小化」アイテムのID
 	#define CMD_QUIT	   3	  ;「終了」アイテムのID
 	;#define CMD_MESSAGE	4	  ;「メッセージ表示」アイテムのID
@@ -11,9 +12,14 @@
 	hmenufile = dllret			; 「ファイル」メニューハンドル
 
 	mesbuf = "BBS を開く(&O)"
-	pm = hmenufile, 0, CMD_OPENBBS
+	pm = hmenufile, 0, CMD_OPENBBS1
 	getptr pm.3, mesbuf
 	dllproc "AppendMenuA", pm, 4, D_USER
+
+	;mesbuf = "BBS(8000) を開く(&0)"
+	;pm = hmenufile, 0, CMD_OPENBBS2
+	;getptr pm.3, mesbuf
+	;dllproc "AppendMenuA", pm, 4, D_USER
 
 	mesbuf = "最小化(&N)"
 	pm = hmenufile, 0, CMD_MINI
